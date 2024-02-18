@@ -1,0 +1,9 @@
+# Simple request maker
+## Examples
+```bash
+srm -u https://api.ipify.org # Get request.
+``` 
+
+```bash
+srm -u https://httpbin.org/post -d "Some Example Data" # Post request.
+``` 
