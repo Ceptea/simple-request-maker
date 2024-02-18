@@ -1,7 +1,7 @@
 import requests
 import argparse as ap
 from rich import print
-
+import json
 parser = ap.ArgumentParser("req", "-u <url> -d <data>", description="Make requests!")
 
 parser.add_argument("-u", "-url")
@@ -15,20 +15,23 @@ if not args.u:
     print("[red]You didnt provide a url.")
     exit()
 try:
-
     if not args.u.startswith("http"):
         args.u = f"https://{args.u}"
     if args.d:
         response = requests.post(args.u, data=args.d)
     elif args.j:
-        response = requests.post(args.u, data=args.d)
+        response = requests.post(args.u, json=json.loads(args.j))
     else:
         response = requests.get(args.u)
 except requests.exceptions.ConnectionError:
     print("[red]Failed to connect to that site, Does it exist?")
 
     exit(-1)
-
+except json.JSONDecodeError as e: 
+    print(f"[red]Invaild json!")
+    print(f"[yellow]{e}")
+    
+    exit(-1)
 
 def getresponse(res):
     c = []
